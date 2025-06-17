@@ -44,7 +44,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
     },
     {
       id: 'notes',
-      title: 'الملاحظات الآمنة',
+      title: 'الملاحظات',
       description: 'إنشاء وتحرير الملاحظات الخاصة',
       icon: BookOpen,
       color: 'from-purple-500 to-purple-700',

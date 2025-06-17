@@ -91,7 +91,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
             </button>
             <div className="flex items-center gap-3">
               <BookOpen className="h-6 w-6 text-purple-400" />
-              <h1 className="text-2xl font-bold text-white">الملاحظات الآمنة</h1>
+              <h1 className="text-2xl font-bold text-white">الملاحظات</h1>
             </div>
           </div>
           
