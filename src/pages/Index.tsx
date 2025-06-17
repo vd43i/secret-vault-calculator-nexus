@@ -6,18 +6,35 @@ import VaultDashboard from '../components/VaultDashboard';
 import FilesPage from '../components/vault/FilesPage';
 import GalleryPage from '../components/vault/GalleryPage';
 import NotesPage from '../components/vault/NotesPage';
+import InitialSetup from '../components/InitialSetup';
 import { useToast } from "@/hooks/use-toast";
 
-type AppState = 'calculator' | 'vault-login' | 'vault-dashboard' | 'files' | 'gallery' | 'notes' | 'trash' | 'settings';
+type AppState = 'initial-setup' | 'calculator' | 'vault-login' | 'vault-dashboard' | 'files' | 'gallery' | 'notes' | 'trash' | 'settings';
 
 const Index = () => {
   const [currentState, setCurrentState] = useState<AppState>('calculator');
   const { toast } = useToast();
 
+  useEffect(() => {
+    const setupComplete = localStorage.getItem('vault_setup_complete');
+    if (!setupComplete) {
+      setCurrentState('initial-setup');
+    }
+  }, []);
+
+  const handleInitialSetup = (password: string) => {
+    toast({
+      title: "🔐 تم إنشاء الخزنة بنجاح",
+      description: "يمكنك الآن استخدام الآلة الحاسبة بشكل طبيعي",
+      duration: 3000,
+    });
+    setCurrentState('calculator');
+  };
+
   const handleSecretAccess = () => {
     toast({
-      title: "🔓 Secret Access Detected",
-      description: "Redirecting to secure vault...",
+      title: "🔓 تم اكتشاف وصول سري",
+      description: "جاري التوجيه للخزنة الآمنة...",
       duration: 2000,
     });
     
@@ -28,8 +45,8 @@ const Index = () => {
 
   const handleVaultLogin = () => {
     toast({
-      title: "🔒 Access Granted",
-      description: "Welcome to your secure vault",
+      title: "🔒 تم منح الوصول",
+      description: "مرحباً بك في خزنتك الآمنة",
       duration: 2000,
     });
     setCurrentState('vault-dashboard');
@@ -37,8 +54,8 @@ const Index = () => {
 
   const handleVaultLogout = () => {
     toast({
-      title: "🔐 Vault Locked",
-      description: "Your data is secure",
+      title: "🔐 تم قفل الخزنة",
+      description: "بياناتك محمية بأمان",
       duration: 2000,
     });
     setCurrentState('calculator');
@@ -54,6 +71,9 @@ const Index = () => {
 
   const renderCurrentPage = () => {
     switch (currentState) {
+      case 'initial-setup':
+        return <InitialSetup onSetupComplete={handleInitialSetup} />;
+        
       case 'calculator':
         return <Calculator onSecretAccess={handleSecretAccess} />;
       
@@ -86,13 +106,13 @@ const Index = () => {
         return (
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-4">Trash Bin</h2>
-              <p className="text-gray-400 mb-4">Feature coming soon...</p>
+              <h2 className="text-2xl font-bold text-white mb-4">سلة المحذوفات</h2>
+              <p className="text-gray-400 mb-4">هذه الميزة قادمة قريباً...</p>
               <button
                 onClick={handleBackToVault}
                 className="px-6 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-colors"
               >
-                Back to Vault
+                العودة للخزنة
               </button>
             </div>
           </div>
@@ -102,13 +122,13 @@ const Index = () => {
         return (
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-4">Settings</h2>
-              <p className="text-gray-400 mb-4">Security and vault settings coming soon...</p>
+              <h2 className="text-2xl font-bold text-white mb-4">الإعدادات</h2>
+              <p className="text-gray-400 mb-4">إعدادات الأمان والخزنة قادمة قريباً...</p>
               <button
                 onClick={handleBackToVault}
                 className="px-6 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-colors"
               >
-                Back to Vault
+                العودة للخزنة
               </button>
             </div>
           </div>

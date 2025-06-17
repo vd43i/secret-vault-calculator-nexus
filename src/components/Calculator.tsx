@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Calculator as CalcIcon, History, Lock } from 'lucide-react';
+import { Calculator as CalcIcon, History } from 'lucide-react';
 
 interface CalculatorProps {
   onSecretAccess: () => void;
@@ -34,14 +34,6 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
       
       setDisplay(String(result));
       setPreviousValue(String(result));
-      
-      // Check for secret access code
-      if (String(result) === '1337') {
-        setTimeout(() => {
-          onSecretAccess();
-        }, 1000);
-        return;
-      }
     }
 
     setWaitingForNewValue(true);
@@ -66,6 +58,16 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
   };
 
   const performCalculation = () => {
+    const savedPassword = localStorage.getItem('vault_password');
+    
+    // Check for vault access if password matches display
+    if (savedPassword && display === savedPassword) {
+      setTimeout(() => {
+        onSecretAccess();
+      }, 500);
+      return;
+    }
+
     if (previousValue !== null && operation) {
       const inputValue = parseFloat(display);
       const currentValue = parseFloat(previousValue);
@@ -79,11 +81,11 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
       setOperation(null);
       setWaitingForNewValue(true);
       
-      // Check for secret access code
-      if (String(result) === '1337') {
+      // Check for vault access after calculation
+      if (savedPassword && String(result) === savedPassword) {
         setTimeout(() => {
           onSecretAccess();
-        }, 1000);
+        }, 500);
       }
     }
   };
@@ -142,7 +144,7 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
         <div className="flex items-center justify-between mb-8 pt-8">
           <div className="flex items-center gap-3">
             <CalcIcon className="h-8 w-8 text-blue-400" />
-            <h1 className="text-2xl font-bold text-white">Calculator</h1>
+            <h1 className="text-2xl font-bold text-white">الآلة الحاسبة</h1>
           </div>
           <div className="flex gap-2">
             <button
@@ -151,9 +153,6 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
             >
               <History className="h-5 w-5" />
             </button>
-            <div className="p-2 rounded-lg bg-gray-800">
-              <Lock className="h-5 w-5 text-blue-400" />
-            </div>
           </div>
         </div>
 
@@ -161,20 +160,20 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
         {showHistory && (
           <div className="mb-4 p-4 rounded-xl bg-gray-800/50 backdrop-blur-lg border border-gray-700">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-medium text-gray-300">History</h3>
+              <h3 className="text-sm font-medium text-gray-300">السجل</h3>
               <button
                 onClick={clearHistory}
                 className="text-xs text-blue-400 hover:text-blue-300"
               >
-                Clear
+                مسح
               </button>
             </div>
             <div className="space-y-1 max-h-32 overflow-y-auto">
               {history.length === 0 ? (
-                <p className="text-xs text-gray-500">No calculations yet</p>
+                <p className="text-xs text-gray-500">لا توجد عمليات حسابية</p>
               ) : (
                 history.map((calc, index) => (
-                  <div key={index} className="text-xs text-gray-400 font-mono">
+                  <div key={index} className="text-xs text-gray-400 font-mono text-right">
                     {calc}
                   </div>
                 ))
@@ -210,13 +209,6 @@ const Calculator: React.FC<CalculatorProps> = ({ onSecretAccess }) => {
               {button}
             </button>
           ))}
-        </div>
-
-        {/* Secret Hint */}
-        <div className="mt-8 text-center">
-          <p className="text-xs text-gray-500">
-            🔒 Secret access available for special calculations
-          </p>
         </div>
       </div>
     </div>

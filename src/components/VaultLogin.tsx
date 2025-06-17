@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Lock, Shield, AlertCircle } from 'lucide-react';
+import { Shield, AlertCircle } from 'lucide-react';
 
 interface VaultLoginProps {
   onLogin: () => void;
@@ -13,12 +13,12 @@ const VaultLogin: React.FC<VaultLoginProps> = ({ onLogin, onBack }) => {
   const [isLocked, setIsLocked] = useState(false);
   const [error, setError] = useState('');
 
-  const correctPassword = '1337';
+  const correctPassword = localStorage.getItem('vault_password') || '1337';
   const maxAttempts = 3;
 
   const handleLogin = () => {
     if (isLocked) {
-      setError('Too many failed attempts. Please wait.');
+      setError('تم قفل الخزنة بسبب المحاولات المتكررة. يرجى الانتظار.');
       return;
     }
 
@@ -31,14 +31,14 @@ const VaultLogin: React.FC<VaultLoginProps> = ({ onLogin, onBack }) => {
       
       if (newAttempts >= maxAttempts) {
         setIsLocked(true);
-        setError('Vault locked due to multiple failed attempts');
+        setError('تم قفل الخزنة بسبب المحاولات المتكررة');
         setTimeout(() => {
           setIsLocked(false);
           setAttempts(0);
           setError('');
         }, 30000);
       } else {
-        setError(`Incorrect password. ${maxAttempts - newAttempts} attempts remaining.`);
+        setError(`كلمة مرور خاطئة. ${maxAttempts - newAttempts} محاولات متبقية.`);
       }
       
       setPassword('');
@@ -70,15 +70,14 @@ const VaultLogin: React.FC<VaultLoginProps> = ({ onLogin, onBack }) => {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 mb-4">
             <Shield className="h-10 w-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Secure Vault</h1>
-          <p className="text-gray-400">Enter your access code</p>
+          <h1 className="text-3xl font-bold text-white mb-2">الخزنة السرية</h1>
+          <p className="text-gray-400">أدخل كلمة المرور</p>
         </div>
 
         {/* Password Display */}
         <div className="mb-6 p-6 rounded-xl bg-gray-800/50 backdrop-blur-lg border border-gray-700">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Lock className="h-5 w-5 text-blue-400" />
-            <span className="text-sm text-gray-300">Access Code</span>
+            <span className="text-sm text-gray-300">كلمة المرور</span>
           </div>
           <div className="flex justify-center gap-2">
             {Array.from({ length: 8 }).map((_, index) => (
@@ -117,7 +116,7 @@ const VaultLogin: React.FC<VaultLoginProps> = ({ onLogin, onBack }) => {
                   : 'bg-gradient-to-br from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800'
               } ${isLocked ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              {key === 'delete' ? '⌫' : key === 'clear' ? 'Clear' : key}
+              {key === 'delete' ? '⌫' : key === 'clear' ? 'مسح' : key}
             </button>
           ))}
         </div>
@@ -129,22 +128,22 @@ const VaultLogin: React.FC<VaultLoginProps> = ({ onLogin, onBack }) => {
             disabled={password.length === 0 || isLocked}
             className="w-full h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 text-white font-semibold hover:from-blue-600 hover:to-blue-800 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLocked ? 'Vault Locked' : 'Enter Vault'}
+            {isLocked ? 'الخزنة مقفلة' : 'دخول الخزنة'}
           </button>
 
           <button
             onClick={onBack}
             className="w-full h-12 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 text-white font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-200 active:scale-95"
           >
-            Back to Calculator
+            العودة للآلة الحاسبة
           </button>
         </div>
 
         {/* Security Info */}
         <div className="mt-6 text-center text-xs text-gray-500">
-          <p>🔒 Vault will lock after {maxAttempts} failed attempts</p>
+          <p>🔒 سيتم قفل الخزنة بعد {maxAttempts} محاولات خاطئة</p>
           {isLocked && (
-            <p className="text-red-400 mt-1">Unlock in 30 seconds</p>
+            <p className="text-red-400 mt-1">إلغاء القفل خلال 30 ثانية</p>
           )}
         </div>
       </div>
