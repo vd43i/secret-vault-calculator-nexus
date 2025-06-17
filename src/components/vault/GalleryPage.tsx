@@ -18,65 +18,32 @@ interface GalleryPageProps {
 const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [images] = useState([
-    {
-      id: 1,
-      name: 'Family Photo',
-      url: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400',
-      size: '3.2 MB',
-      dateAdded: '2024-01-15'
-    },
-    {
-      id: 2,
-      name: 'Vacation Sunset',
-      url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400',
-      size: '4.1 MB',
-      dateAdded: '2024-01-14'
-    },
-    {
-      id: 3,
-      name: 'City Skyline',
-      url: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400',
-      size: '2.8 MB',
-      dateAdded: '2024-01-13'
-    },
-    {
-      id: 4,
-      name: 'Mountain View',
-      url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400',
-      size: '5.1 MB',
-      dateAdded: '2024-01-12'
-    },
-    {
-      id: 5,
-      name: 'Ocean Waves',
-      url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400',
-      size: '3.7 MB',
-      dateAdded: '2024-01-11'
-    },
-    {
-      id: 6,
-      name: 'Forest Path',
-      url: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400',
-      size: '4.3 MB',
-      dateAdded: '2024-01-10'
-    }
-  ]);
+  const [images, setImages] = useState<Array<{
+    id: number;
+    name: string;
+    url: string;
+    size: string;
+    dateAdded: string;
+  }>>([]);
 
   const filteredImages = images.filter(image =>
     image.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleImageUpload = () => {
-    console.log('Image upload triggered');
+    console.log('تم تشغيل رفع الصور');
   };
 
   const handleDownload = (imageName: string) => {
-    console.log(`Downloading: ${imageName}`);
+    console.log(`تحميل: ${imageName}`);
   };
 
   const handleDelete = (imageId: number, imageName: string) => {
-    console.log(`Deleting image: ${imageName}`);
+    setImages(prev => prev.filter(img => img.id !== imageId));
+    if (selectedImage === imageId) {
+      setSelectedImage(null);
+    }
+    console.log(`حذف الصورة: ${imageName}`);
   };
 
   const selectedImageData = selectedImage ? images.find(img => img.id === selectedImage) : null;
@@ -95,7 +62,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
             </button>
             <div className="flex items-center gap-3">
               <ImageIcon className="h-6 w-6 text-green-400" />
-              <h1 className="text-2xl font-bold text-white">Image Gallery</h1>
+              <h1 className="text-2xl font-bold text-white">معرض الصور</h1>
             </div>
           </div>
           
@@ -104,7 +71,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white hover:from-green-600 hover:to-green-800 transition-all duration-200"
           >
             <Plus className="h-4 w-4" />
-            <span>Upload Images</span>
+            <span>رفع صور</span>
           </button>
         </div>
 
@@ -114,10 +81,11 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search images..."
+              placeholder="البحث في الصور..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors"
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-green-500 transition-colors text-right"
+              dir="rtl"
             />
           </div>
         </div>
@@ -126,13 +94,13 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
         <div className="mb-6 p-8 rounded-xl border-2 border-dashed border-gray-600 bg-gray-800/30 hover:border-green-500 transition-colors cursor-pointer">
           <div className="text-center">
             <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">Drop images here to upload</h3>
-            <p className="text-sm text-gray-400 mb-4">Supported formats: JPG, PNG, GIF, WebP</p>
+            <h3 className="text-lg font-semibold text-white mb-2">اسحب الصور هنا للرفع</h3>
+            <p className="text-sm text-gray-400 mb-4">الصيغ المدعومة: JPG, PNG, GIF, WebP</p>
             <button
               onClick={handleImageUpload}
               className="px-6 py-2 rounded-lg bg-green-600/20 border border-green-600/30 text-green-400 hover:bg-green-600/30 transition-colors"
             >
-              Choose Images
+              اختر الصور
             </button>
           </div>
         </div>
@@ -141,9 +109,9 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
         {filteredImages.length === 0 ? (
           <div className="text-center py-12">
             <ImageIcon className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-400 mb-2">No images found</h3>
+            <h3 className="text-lg font-semibold text-gray-400 mb-2">لا توجد صور</h3>
             <p className="text-sm text-gray-500">
-              {searchQuery ? 'Try a different search term' : 'Upload your first image to get started'}
+              {searchQuery ? 'جرب مصطلح بحث مختلف' : 'ارفع أول صورة لك للبدء'}
             </p>
           </div>
         ) : (
@@ -183,7 +151,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                   </div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                  <h3 className="text-white text-sm font-medium truncate">{image.name}</h3>
+                  <h3 className="text-white text-sm font-medium truncate text-right" dir="rtl">{image.name}</h3>
                   <p className="text-gray-300 text-xs">{image.size}</p>
                 </div>
               </div>
@@ -209,10 +177,10 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
               />
               
               <div className="mt-4 p-4 rounded-lg bg-gray-800/80 backdrop-blur-lg">
-                <h3 className="text-white text-lg font-semibold mb-2">{selectedImageData.name}</h3>
+                <h3 className="text-white text-lg font-semibold mb-2 text-right" dir="rtl">{selectedImageData.name}</h3>
                 <div className="flex items-center justify-between text-sm text-gray-300">
-                  <span>Size: {selectedImageData.size}</span>
-                  <span>Added: {selectedImageData.dateAdded}</span>
+                  <span>الحجم: {selectedImageData.size}</span>
+                  <span>تاريخ الإضافة: {selectedImageData.dateAdded}</span>
                 </div>
                 
                 <div className="flex gap-2 mt-3">
@@ -221,7 +189,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-600/20 border border-green-600/30 text-green-400 hover:bg-green-600/30 transition-colors"
                   >
                     <Download className="h-4 w-4" />
-                    <span>Download</span>
+                    <span>تحميل</span>
                   </button>
                   <button
                     onClick={() => {
@@ -231,7 +199,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onBack }) => {
                     className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-600/20 border border-red-600/30 text-red-400 hover:bg-red-600/30 transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
-                    <span>Delete</span>
+                    <span>حذف</span>
                   </button>
                 </div>
               </div>

@@ -28,29 +28,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
   const [selectedNote, setSelectedNote] = useState<number | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
-  const [notes, setNotes] = useState<Note[]>([
-    {
-      id: 1,
-      title: 'Personal Tasks',
-      content: 'Remember to:\n- Pay bills\n- Buy groceries\n- Call mom\n- Schedule dentist appointment',
-      dateCreated: '2024-01-15',
-      dateModified: '2024-01-15'
-    },
-    {
-      id: 2,
-      title: 'Project Ideas',
-      content: 'Ideas for new projects:\n\n1. Mobile app for fitness tracking\n2. Website redesign\n3. Learning new programming language\n4. Side business planning',
-      dateCreated: '2024-01-14',
-      dateModified: '2024-01-14'
-    },
-    {
-      id: 3,
-      title: 'Meeting Notes',
-      content: 'Team meeting - January 13, 2024\n\nDiscussed:\n- Q1 goals and objectives\n- Resource allocation\n- Timeline for deliverables\n- Next steps and action items',
-      dateCreated: '2024-01-13',
-      dateModified: '2024-01-13'
-    }
-  ]);
+  const [notes, setNotes] = useState<Note[]>([]);
 
   const filteredNotes = notes.filter(note =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -60,7 +38,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
   const handleCreateNote = () => {
     const newNote: Note = {
       id: Date.now(),
-      title: 'New Note',
+      title: 'ملاحظة جديدة',
       content: '',
       dateCreated: new Date().toISOString().split('T')[0],
       dateModified: new Date().toISOString().split('T')[0]
@@ -113,7 +91,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
             </button>
             <div className="flex items-center gap-3">
               <BookOpen className="h-6 w-6 text-purple-400" />
-              <h1 className="text-2xl font-bold text-white">Secure Notes</h1>
+              <h1 className="text-2xl font-bold text-white">الملاحظات الآمنة</h1>
             </div>
           </div>
           
@@ -122,7 +100,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 text-white hover:from-purple-600 hover:to-purple-800 transition-all duration-200"
           >
             <Plus className="h-4 w-4" />
-            <span>New Note</span>
+            <span>ملاحظة جديدة</span>
           </button>
         </div>
 
@@ -134,10 +112,11 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search notes..."
+                placeholder="البحث في الملاحظات..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 transition-colors text-right"
+                dir="rtl"
               />
             </div>
 
@@ -147,7 +126,7 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
                 <div className="text-center py-8">
                   <BookOpen className="h-12 w-12 text-gray-600 mx-auto mb-3" />
                   <p className="text-gray-400 text-sm">
-                    {searchQuery ? 'No notes found' : 'No notes yet'}
+                    {searchQuery ? 'لم يتم العثور على ملاحظات' : 'لا توجد ملاحظات بعد'}
                   </p>
                 </div>
               ) : (
@@ -161,12 +140,12 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
                         : 'bg-gray-800/50 border border-gray-700 hover:border-gray-600'
                     }`}
                   >
-                    <h3 className="text-white font-medium mb-2 truncate">{note.title}</h3>
-                    <p className="text-gray-400 text-sm mb-2 line-clamp-2">
+                    <h3 className="text-white font-medium mb-2 truncate text-right" dir="rtl">{note.title}</h3>
+                    <p className="text-gray-400 text-sm mb-2 line-clamp-2 text-right" dir="rtl">
                       {note.content.substring(0, 100)}...
                     </p>
-                    <p className="text-gray-500 text-xs">
-                      Modified {note.dateModified}
+                    <p className="text-gray-500 text-xs text-right" dir="rtl">
+                      آخر تعديل {note.dateModified}
                     </p>
                   </div>
                 ))
@@ -180,8 +159,8 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
               <div className="h-full flex items-center justify-center bg-gray-800/30 rounded-xl border border-gray-700">
                 <div className="text-center">
                   <BookOpen className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-400 mb-2">Select a note</h3>
-                  <p className="text-sm text-gray-500">Choose a note from the list to view or edit</p>
+                  <h3 className="text-lg font-semibold text-gray-400 mb-2">اختر ملاحظة</h3>
+                  <p className="text-sm text-gray-500">اختر ملاحظة من القائمة لعرضها أو تعديلها</p>
                 </div>
               </div>
             ) : isEditing && editingNote ? (
@@ -192,8 +171,9 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
                     type="text"
                     value={editingNote.title}
                     onChange={(e) => setEditingNote({ ...editingNote, title: e.target.value })}
-                    className="text-lg font-semibold text-white bg-transparent border-none outline-none flex-1"
-                    placeholder="Note title..."
+                    className="text-lg font-semibold text-white bg-transparent border-none outline-none flex-1 text-right"
+                    placeholder="عنوان الملاحظة..."
+                    dir="rtl"
                   />
                   <div className="flex gap-2">
                     <button
@@ -213,15 +193,16 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
                 <textarea
                   value={editingNote.content}
                   onChange={(e) => setEditingNote({ ...editingNote, content: e.target.value })}
-                  placeholder="Start writing your note..."
-                  className="flex-1 p-4 bg-transparent text-white border-none outline-none resize-none font-mono text-sm leading-relaxed"
+                  placeholder="ابدأ بكتابة ملاحظتك..."
+                  className="flex-1 p-4 bg-transparent text-white border-none outline-none resize-none font-mono text-sm leading-relaxed text-right"
+                  dir="rtl"
                 />
               </div>
             ) : selectedNoteData ? (
               /* Viewer Mode */
               <div className="h-full bg-gray-800/50 rounded-xl border border-gray-700 flex flex-col">
                 <div className="flex items-center justify-between p-4 border-b border-gray-700">
-                  <h2 className="text-lg font-semibold text-white">{selectedNoteData.title}</h2>
+                  <h2 className="text-lg font-semibold text-white text-right" dir="rtl">{selectedNoteData.title}</h2>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEditNote(selectedNoteData)}
@@ -238,12 +219,12 @@ const NotesPage: React.FC<NotesPageProps> = ({ onBack }) => {
                   </div>
                 </div>
                 <div className="flex-1 p-4 overflow-y-auto">
-                  <div className="text-gray-300 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-                    {selectedNoteData.content}
+                  <div className="text-gray-300 font-mono text-sm leading-relaxed whitespace-pre-wrap text-right" dir="rtl">
+                    {selectedNoteData.content || 'لا يوجد محتوى...'}
                   </div>
                 </div>
-                <div className="p-4 border-t border-gray-700 text-xs text-gray-500">
-                  Created: {selectedNoteData.dateCreated} | Modified: {selectedNoteData.dateModified}
+                <div className="p-4 border-t border-gray-700 text-xs text-gray-500 text-right" dir="rtl">
+                  تم الإنشاء: {selectedNoteData.dateCreated} | آخر تعديل: {selectedNoteData.dateModified}
                 </div>
               </div>
             ) : null}
