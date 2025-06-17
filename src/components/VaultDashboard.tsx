@@ -19,52 +19,52 @@ interface VaultDashboardProps {
 
 const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate }) => {
   const [stats] = useState({
-    files: 12,
-    images: 8,
-    notes: 5,
-    storage: '2.3 GB'
+    files: 0,
+    images: 0,
+    notes: 0,
+    storage: '0 GB'
   });
 
   const menuItems = [
     {
       id: 'files',
-      title: 'Files Manager',
-      description: 'Upload, organize and manage your files',
+      title: 'مدير الملفات',
+      description: 'رفع وتنظيم وإدارة ملفاتك',
       icon: File,
       color: 'from-blue-500 to-blue-700',
-      stats: `${stats.files} files`
+      stats: `${stats.files} ملف`
     },
     {
       id: 'gallery',
-      title: 'Image Gallery',
-      description: 'View and organize your photos',
+      title: 'معرض الصور',
+      description: 'عرض وتنظيم صورك',
       icon: Image,
       color: 'from-green-500 to-green-700',
-      stats: `${stats.images} images`
+      stats: `${stats.images} صورة`
     },
     {
       id: 'notes',
-      title: 'Secure Notes',
-      description: 'Create and edit private notes',
+      title: 'الملاحظات الآمنة',
+      description: 'إنشاء وتحرير الملاحظات الخاصة',
       icon: BookOpen,
       color: 'from-purple-500 to-purple-700',
-      stats: `${stats.notes} notes`
+      stats: `${stats.notes} ملاحظة`
     },
     {
       id: 'trash',
-      title: 'Trash Bin',
-      description: 'Recover deleted items',
+      title: 'سلة المحذوفات',
+      description: 'استعادة العناصر المحذوفة',
       icon: Trash2,
       color: 'from-red-500 to-red-700',
-      stats: 'Empty'
+      stats: 'فارغة'
     },
     {
       id: 'settings',
-      title: 'Settings',
-      description: 'Security and storage settings',
+      title: 'الإعدادات',
+      description: 'إعدادات الأمان والتخزين',
       icon: Settings,
       color: 'from-gray-500 to-gray-700',
-      stats: 'Configure'
+      stats: 'تكوين'
     }
   ];
 
@@ -78,8 +78,8 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
               <Shield className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Secure Vault</h1>
-              <p className="text-sm text-gray-400">Your private digital safe</p>
+              <h1 className="text-2xl font-bold text-white">الخزنة الآمنة</h1>
+              <p className="text-sm text-gray-400">خزنتك الرقمية الخاصة</p>
             </div>
           </div>
           
@@ -88,7 +88,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600/20 border border-red-600/30 text-red-400 hover:bg-red-600/30 transition-colors"
           >
             <LogOut className="h-4 w-4" />
-            <span className="text-sm">Logout</span>
+            <span className="text-sm">تسجيل خروج</span>
           </button>
         </div>
 
@@ -98,7 +98,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
             <div className="flex items-center gap-3">
               <Folder className="h-5 w-5 text-blue-400" />
               <div>
-                <p className="text-sm text-gray-400">Total Files</p>
+                <p className="text-sm text-gray-400">إجمالي الملفات</p>
                 <p className="text-lg font-semibold text-white">{stats.files}</p>
               </div>
             </div>
@@ -108,7 +108,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
             <div className="flex items-center gap-3">
               <Image className="h-5 w-5 text-green-400" />
               <div>
-                <p className="text-sm text-gray-400">Images</p>
+                <p className="text-sm text-gray-400">الصور</p>
                 <p className="text-lg font-semibold text-white">{stats.images}</p>
               </div>
             </div>
@@ -118,7 +118,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
             <div className="flex items-center gap-3">
               <BookOpen className="h-5 w-5 text-purple-400" />
               <div>
-                <p className="text-sm text-gray-400">Notes</p>
+                <p className="text-sm text-gray-400">الملاحظات</p>
                 <p className="text-lg font-semibold text-white">{stats.notes}</p>
               </div>
             </div>
@@ -128,7 +128,7 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
             <div className="flex items-center gap-3">
               <HardDrive className="h-5 w-5 text-yellow-400" />
               <div>
-                <p className="text-sm text-gray-400">Storage</p>
+                <p className="text-sm text-gray-400">التخزين</p>
                 <p className="text-lg font-semibold text-white">{stats.storage}</p>
               </div>
             </div>
@@ -173,9 +173,9 @@ const VaultDashboard: React.FC<VaultDashboardProps> = ({ onLogout, onNavigate })
           <div className="flex items-start gap-3">
             <Shield className="h-5 w-5 text-blue-400 mt-0.5" />
             <div>
-              <h4 className="text-sm font-medium text-blue-400 mb-1">Security Notice</h4>
+              <h4 className="text-sm font-medium text-blue-400 mb-1">إشعار الأمان</h4>
               <p className="text-xs text-gray-400">
-                Your vault is protected with end-to-end encryption. All data is stored securely and only accessible with your access code.
+                خزنتك محمية بتشفير من طرف إلى طرف. جميع البيانات مخزنة بأمان ولا يمكن الوصول إليها إلا برمز الوصول الخاص بك.
               </p>
             </div>
           </div>

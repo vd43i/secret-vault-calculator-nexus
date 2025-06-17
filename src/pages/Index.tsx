@@ -6,6 +6,7 @@ import VaultDashboard from '../components/VaultDashboard';
 import FilesPage from '../components/vault/FilesPage';
 import GalleryPage from '../components/vault/GalleryPage';
 import NotesPage from '../components/vault/NotesPage';
+import SettingsPage from '../components/vault/SettingsPage';
 import InitialSetup from '../components/InitialSetup';
 import { useToast } from "@/hooks/use-toast";
 
@@ -102,28 +103,15 @@ const Index = () => {
       case 'notes':
         return <NotesPage onBack={handleBackToVault} />;
       
+      case 'settings':
+        return <SettingsPage onBack={handleBackToVault} onLogout={handleVaultLogout} />;
+      
       case 'trash':
         return (
           <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-white mb-4">سلة المحذوفات</h2>
               <p className="text-gray-400 mb-4">هذه الميزة قادمة قريباً...</p>
-              <button
-                onClick={handleBackToVault}
-                className="px-6 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-colors"
-              >
-                العودة للخزنة
-              </button>
-            </div>
-          </div>
-        );
-      
-      case 'settings':
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-white mb-4">الإعدادات</h2>
-              <p className="text-gray-400 mb-4">إعدادات الأمان والخزنة قادمة قريباً...</p>
               <button
                 onClick={handleBackToVault}
                 className="px-6 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 transition-colors"
